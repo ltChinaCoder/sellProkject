@@ -14,5 +14,4 @@ public interface ProductInfoService {
     List<ProductInfo> findUpAll();
 
     ProductInfo save(ProductInfo productInfo);
-
 }

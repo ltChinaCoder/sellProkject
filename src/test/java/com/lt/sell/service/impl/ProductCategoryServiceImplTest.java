@@ -33,15 +33,7 @@ public class ProductCategoryServiceImplTest {
 
     @Test
     public void findByCategoryTypeIn() {
-        List<ProductCategory> productCategories = productCategoryService.findByCategoryTypeIn(Arrays.asList(55));
-        //  org.junit.Assert.assertNotEquals(0,productCategories.size());
-    }
-
-    @Test
-    public void save() {
-        ProductCategory productCategory = new ProductCategory();
-        productCategory.setCategoryName("汽配2");
-        productCategory.setCategoryType(7);
-        productCategoryService.save(productCategory);
+        List<ProductCategory> productCategories = productCategoryService.findByCategoryTypeIn(Arrays.asList(1, 5));
+        System.out.println(productCategories.size());
     }
 }

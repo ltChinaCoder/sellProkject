@@ -23,7 +23,7 @@ public class LoggerTest {
 
     @Test
     public void testLog2() {
-        log.debug("debug");
+
         log.info("info....");
         log.error("error");
     }

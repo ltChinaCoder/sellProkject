@@ -22,6 +22,7 @@ public class productInfoServiceImpl implements ProductInfoService {
 
     @Override
     public Page<ProductInfo> findAll(org.springframework.data.domain.Pageable pageable) {
+
         return productInfoRepository.findAll(pageable);
     }
 
@@ -32,6 +33,7 @@ public class productInfoServiceImpl implements ProductInfoService {
 
     @Override
     public ProductInfo save(ProductInfo productInfo) {
+
         return productInfoRepository.save(productInfo);
     }
 }

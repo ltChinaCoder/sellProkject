@@ -14,13 +14,11 @@ import java.math.BigDecimal;
 public class ProductInfoRepositoryTest {
     @Autowired
     ProductInfoRepository productInfoRepository;
-
-
     @Test
     public void testSave() {
         ProductInfo productInfo = new ProductInfo();
         productInfo.setCategoryType(1);
-        productInfo.setProductDescription("很好吃");
+        productInfo.setProductDescription("111");
         productInfo.setProductId("1234");
         productInfo.setProductPrice(new BigDecimal(9));
         productInfo.setProductStock(100);
