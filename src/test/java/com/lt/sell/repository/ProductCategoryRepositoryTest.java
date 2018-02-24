@@ -8,9 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -50,4 +49,12 @@ public class ProductCategoryRepositoryTest {
             one.setCategoryType(5);
             productCategoryRepository.save(one);
         }
+
+    @Test
+    public void testfindByCategoryTypeIn() {
+        List<ProductCategory> byCategoryTypeIn = productCategoryRepository.findByCategoryTypeIn(Arrays.asList(3, 4, 5));
+        for (ProductCategory productCategory : byCategoryTypeIn) {
+            System.out.println(productCategory);
+        }
+    }
 }
