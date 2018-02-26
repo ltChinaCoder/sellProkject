@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 public class ProductInfoRepositoryTest {
     @Autowired
     ProductInfoRepository productInfoRepository;
+
     @Test
     public void testSave() {
         ProductInfo productInfo = new ProductInfo();
