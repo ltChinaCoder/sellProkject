@@ -7,6 +7,7 @@ import com.lt.sell.enums.SellErrorEnum;
 import com.lt.sell.exception.SellException;
 import com.lt.sell.repository.ProductInfoRepository;
 import com.lt.sell.service.ProductInfoService;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Slf4j
 public class productInfoServiceImpl implements ProductInfoService {
     @Autowired
     ProductInfoRepository productInfoRepository;
@@ -52,8 +54,10 @@ public class productInfoServiceImpl implements ProductInfoService {
         Assert.assertNotNull(cartDtos);
         for (CartDto cartDto : cartDtos) {
             ProductInfo productInfo = productInfoRepository.findOne(cartDto.getProductId());
-            if (productInfo == null)
+            if (productInfo == null) {
+                log.error("【增加库存】商品id找不到,productId={}", cartDto.getProductId());
                 throw new SellException(SellErrorEnum.PRODUCT_NOT_EXIST);
+            }
             productInfo.setProductStock(productInfo.getProductStock() + cartDto.getProductQuantity());
             productInfoRepository.save(productInfo);
         }

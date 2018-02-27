@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
@@ -26,5 +28,13 @@ public class ProductInfoRepositoryTest {
         productInfo.setProductName("扬州炒饭");
         productInfo.setProductStatus(1);
         productInfoRepository.save(productInfo);
+    }
+
+    @Test
+    public void test() {
+        Page<ProductInfo> byProductStatusAndCategoryType = productInfoRepository.findByProductStatusAndCategoryType(0, 1, new PageRequest(0, 4));
+        for (ProductInfo productInfo : byProductStatusAndCategoryType) {
+            System.out.println(productInfo);
+        }
     }
 }

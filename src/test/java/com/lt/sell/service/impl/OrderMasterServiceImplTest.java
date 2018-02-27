@@ -1,7 +1,6 @@
 package com.lt.sell.service.impl;
 
 import com.lt.sell.dataobject.OrderDetail;
-import com.lt.sell.dataobject.OrderMaster;
 import com.lt.sell.dto.OrderMasterDto;
 import com.lt.sell.service.OrderMasterService;
 import lombok.extern.slf4j.Slf4j;
@@ -9,8 +8,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -45,10 +42,8 @@ public class OrderMasterServiceImplTest {
 
     @Test
     public void testFind() {
-
-        Page<OrderMaster> byOpenId = orderMasterService.findByOpenId("110110", new PageRequest(0, 10));
-        for (OrderMaster orderMaster : byOpenId) {
-            log.info("orderMaster " + orderMaster);
-        }
+        OrderMasterDto byOrderId = orderMasterService.findByOrderId("1519630649722311926");
+        //  orderMasterService.cancelOrder(byOrderId);
+        orderMasterService.payOrder(byOrderId);
     }
 }

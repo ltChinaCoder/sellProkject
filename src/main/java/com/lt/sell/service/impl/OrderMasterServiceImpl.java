@@ -89,13 +89,14 @@ public class OrderMasterServiceImpl implements OrderMasterService {
     }
 
     @Override
+    @Transactional
     public OrderMasterDto cancelOrder(OrderMasterDto orderMaster) {
         OrderMaster order = orderMasterRepository.findOne(orderMaster.getOrderId());
         if (order == null) {
             log.error("【取消订单】订单不存在，orderId={},orderStatus={} ", orderMaster.getOrderId(), order.getOrderStatus());
             throw new SellException(SellErrorEnum.ORDER_NOT_EXIST);
         }
-        if (order.getOrderStatus().equals(OrderStatusEnum.CANCELED.getCode())) {
+        if (!order.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
             log.error("【取消订单】订单状态不对，orderId={},orderStatus={} ", orderMaster.getOrderId(), order.getOrderStatus());
             throw new SellException(SellErrorEnum.ORDER_STATUS_ERROR);
         }
@@ -104,7 +105,7 @@ public class OrderMasterServiceImpl implements OrderMasterService {
             throw new SellException(SellErrorEnum.ORDER_DETAIL_EMPTY);
         }
         List<CartDto> cartDtos = orderMaster.getDetails().stream().
-                map(e -> new CartDto(e.getOrderId(), e.getProductQuantity())).
+                map(e -> new CartDto(e.getProductId(), e.getProductQuantity())).
                 collect(Collectors.toList());
         productInfoService.increaseStock(cartDtos);
         order.setOrderStatus(OrderStatusEnum.CANCELED.getCode());
@@ -122,6 +123,7 @@ public class OrderMasterServiceImpl implements OrderMasterService {
     }
 
     @Override
+    @Transactional
     public OrderMasterDto finishOrder(OrderMasterDto orderMaster) {
         OrderMaster order = orderMasterRepository.findOne(orderMaster.getOrderId());
         if (order == null) {
@@ -131,10 +133,6 @@ public class OrderMasterServiceImpl implements OrderMasterService {
         if (!order.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
             log.error("【完成订单】订单状态不对，orderId={},orderStatus={} ", orderMaster.getOrderId(), order.getOrderStatus());
             throw new SellException(SellErrorEnum.ORDER_STATUS_ERROR);
-        }
-        if (!order.getPayStatus().equals(PayStatusEnum.PAY.getCode())) {
-            log.error("【完成订单】订单付款状态不对，orderId={},payStatus={} ", orderMaster.getOrderId(), order.getOrderStatus());
-            throw new SellException(SellErrorEnum.ORDER_PAY_STATUS_ERROR);
         }
         order.setOrderStatus(OrderStatusEnum.COMPLETED.getCode());
         OrderMaster orderMaster1 = orderMasterRepository.save(order);
@@ -147,6 +145,7 @@ public class OrderMasterServiceImpl implements OrderMasterService {
     }
 
     @Override
+    @Transactional
     public OrderMasterDto payOrder(OrderMasterDto orderMaster) {
         OrderMaster order = orderMasterRepository.findOne(orderMaster.getOrderId());
         if (order == null) {
@@ -158,7 +157,7 @@ public class OrderMasterServiceImpl implements OrderMasterService {
             throw new SellException(SellErrorEnum.ORDER_STATUS_ERROR);
         }
         if (order.getPayStatus().equals(PayStatusEnum.PAY.getCode())) {
-            log.error("【完成支付】订单付款状态不对，orderId={},payStatus={} ", orderMaster.getOrderId(), order.getPayStatus());
+            log.error("【完成支付】订单付款状态已付款，orderId={},payStatus={} ", orderMaster.getOrderId(), order.getPayStatus());
             throw new SellException(SellErrorEnum.ORDER_PAY_STATUS_ERROR);
         }
         order.setPayStatus(PayStatusEnum.PAY.getCode());
