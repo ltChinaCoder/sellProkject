@@ -3,7 +3,7 @@ package com.lt.sell.enums;
 import lombok.Getter;
 
 @Getter
-public enum ProductStatusEnum {
+public enum ProductStatusEnum implements BaseEnum {
     up(0, "在架"),
     down(1, "下架");
     private Integer code;

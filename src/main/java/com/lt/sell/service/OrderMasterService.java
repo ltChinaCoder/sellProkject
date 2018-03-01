@@ -19,4 +19,5 @@ public interface OrderMasterService {
 
     OrderMasterDto payOrder(OrderMasterDto orderMaster);
 
+    Page<OrderMaster> findAll(Pageable pageable);
 }

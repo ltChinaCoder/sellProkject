@@ -3,7 +3,7 @@ package com.lt.sell.enums;
 import lombok.Getter;
 
 @Getter
-public enum SellErrorEnum {
+public enum SellErrorEnum implements BaseEnum {
     PRODUCT_NOT_EXIST(1, "商品不存在"),
     STOCK__NOT_ENOUGH(2, "库存不足"),
     DETAIL_NOT_EXIST(4, "订单详情不存在"),

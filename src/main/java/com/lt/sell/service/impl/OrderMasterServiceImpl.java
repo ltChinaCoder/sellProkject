@@ -13,6 +13,7 @@ import com.lt.sell.repository.OrderDetailRepository;
 import com.lt.sell.repository.OrderMasterRepository;
 import com.lt.sell.service.OrderMasterService;
 import com.lt.sell.service.ProductInfoService;
+import com.lt.sell.service.WebSocket;
 import com.lt.sell.util.KeyGenerateUtil;
 import com.lt.sell.util.ListMapUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +39,8 @@ public class OrderMasterServiceImpl implements OrderMasterService {
     ProductInfoService productInfoService;
     @Autowired
     OrderDetailRepository orderDetailRepository;
-
+    @Autowired
+    WebSocket webSocket;
     @Override
     @Transactional
     public OrderMasterDto create(OrderMasterDto orderMaster) {
@@ -66,6 +68,7 @@ public class OrderMasterServiceImpl implements OrderMasterService {
         BeanUtils.copyProperties(orderMaster, orderMaster1);
         orderMasterRepository.save(orderMaster1);
         productInfoService.decreaseStock(cartDtos);
+        webSocket.sendMessage(orderMaster1.toString());
         return orderMaster;
     }
 
@@ -168,5 +171,10 @@ public class OrderMasterServiceImpl implements OrderMasterService {
             throw new SellException(SellErrorEnum.ORDER_STATUS_UPDATE_ERROR);
         }
         return orderMaster;
+    }
+
+    @Override
+    public Page<OrderMaster> findAll(Pageable pageable) {
+        return orderMasterRepository.findAll(pageable);
     }
 }
