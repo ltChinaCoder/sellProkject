@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -14,6 +15,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class OrderMasterServiceImplTest {
     @Autowired
     OrderMasterService orderMasterService;
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
     @Test
     public void create() {
         OrderMasterDto byOrderId = orderMasterService.findByOrderId("1519630773126950803");
@@ -22,4 +25,11 @@ public class OrderMasterServiceImplTest {
         orderMasterDto.setOrderId("");
         orderMasterService.create(orderMasterDto);
     }
+
+    @Test
+    public void testRedis() {
+        stringRedisTemplate.opsForValue().set("1111", "2222");
+        System.out.println(stringRedisTemplate.opsForValue().get("1111"));
+    }
+
 }

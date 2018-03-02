@@ -10,10 +10,14 @@ import com.lt.sell.vo.ProductVo;
 import com.lt.sell.vo.ResultVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +31,7 @@ public class BuyerProductController {
     ProductCategoryService productCategoryService;
 
     @GetMapping("/list")
+    @Cacheable(cacheNames = "product", key = "123")
     public ResultVo list() {
         List<ProductInfo> allProduct = productInfoService.findUpAll();
         ResultVo resultVo = new ResultVo();
@@ -56,6 +61,17 @@ public class BuyerProductController {
         }
         return ResultVoUtil.success(productInfos);
 
+    }
+
+    @RequestMapping("/save/{productId}")
+    @CacheEvict(cacheNames = "product", key = "123")
+    public ResultVo save(@PathVariable String productId) {
+        ResultVo resultVo = new ResultVo();
+        ProductInfo one = productInfoService.findOne(productId);
+        one.setProductPrice(new BigDecimal(25));
+        resultVo.setCode(0);
+        resultVo.setMsg("ok");
+        return resultVo;
     }
 
 }

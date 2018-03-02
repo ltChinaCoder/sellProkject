@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum PayStatusEnum implements BaseEnum {
-    NOTPAY(0, "æœªä»˜æ¬¾"),
-    PAY(1, "å·²ä»˜æ¬¾");
+    NOTPAY(0, "ÉÏ¼ÜÖÐ"),
+    PAY(1, "ÏÂ¼Ü");
     private Integer code;
     private String msg;
 
