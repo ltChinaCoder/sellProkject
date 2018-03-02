@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+hello2
+<script>
+    var websocket = null;
+    if ('WebSocket' in window) {
+        websocket = new WebSocket('ws://localhost:8080/sell/websocket');
+
+    }
+    else {
+        alert("该浏览器不支持websocket！");
+    }
+    websocket.onopen = function (event) {
+        console.log('建立连接')
+    }
+    websocket.onclose = function (event) {
+        console.log('关闭连接')
+    }
+    websocket.onmessage = function (event) {
+        alert("您有新的订单！");
+    }
+    websocket.onerror = function () {
+        alert('websocket内部通信发生错误')
+    }
+    websocket.onbeforeunload = function () {
+        websocket.close();
+    }
+</script>
+</body>
+</html>
